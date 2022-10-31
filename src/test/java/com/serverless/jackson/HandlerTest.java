@@ -1,14 +1,14 @@
 package com.serverless.jackson;
 
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class HandlerTest {
@@ -31,5 +31,7 @@ class HandlerTest {
         handler = new Handler();
         ApiGatewayResponse apiGatewayResponse = handler.handleRequest(input, null);
         assertEquals(200, apiGatewayResponse.getStatusCode());
+
+        //Mockito.verify(handler).employeeToJSONString(Mockito.mock(Employee.class));
     }
 }

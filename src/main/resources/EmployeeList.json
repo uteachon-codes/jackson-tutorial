@@ -1,0 +1,20 @@
+[
+    {
+        "name" : "John",
+        "city" : "Palo Alto",
+        "department" : "HR",
+        "designation" : "Mgr"
+    },
+    {
+        "name" : "John2",
+        "city" : "Los Angeles",
+        "department" : "IT",
+        "designation" : "Mgr"
+    },
+    {
+        "name" : "John3",
+        "city" : "Fremont",
+        "department" : "IT",
+        "designation" : "Mgr"
+    }    
+]

@@ -1,9 +1,13 @@
 package com.serverless.jackson;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
@@ -26,6 +30,15 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
 		String employeeJsonString = "{\"name\":\"John\",\"city\":\"Palo Alto\",\"department\":\"HR\",\"designation\":\"Mgr\"}";
 		Employee employee = JSONStringToEmployee(employeeJsonString);
 		LOG.info("employee: {}", employee.getCity());
+
+		Employee employeeFromFile = readEmployeeJSONFileToEmployee();
+		LOG.info("employee city From File: {}", employeeFromFile.getCity());
+
+		List<Employee> employeesList = readEmployeesJSONFileToEmployeeList();
+		LOG.info("employeesList size:: {}", employeesList.size());
+
+		Employee[] employeesArray = readEmployeesJSONFileToEmployeeArray();
+		LOG.info("employees Array length:: {}", employeesArray.length);	
 
 		JsonNode jsonNode = jSONStringToJsonNode(employeeJsonString);
 		LOG.info(jsonNode.toPrettyString());
@@ -52,7 +65,7 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
 		return jsonStr;
 	}
 
-	// convert JSON string to Java Object: deserialization
+	// convert JSON string to Employee Object: deserialization
 	public Employee JSONStringToEmployee(String jsonString) {
 		Employee employee = null;
 		try {
@@ -63,6 +76,57 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
 		}
 		return employee;
 	} 
+
+	//read employee.json: convert to Employee Object: deserialization
+	public Employee readEmployeeJSONFileToEmployee() {
+		// jackson-tutorial\src\main\resources\Employee.json
+		Employee employee = null;
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			employee = objectMapper.readValue(new File("src/main/resources/Employee.json"), Employee.class);
+		} catch(IOException i) {
+			i.printStackTrace();
+		} 
+		// catch (JsonProcessingException e) {
+		// 	e.printStackTrace();
+		// }
+		return employee;
+	}
+
+
+	//read EmployeeList.json: convert to Employee List: deserialization
+	public List<Employee> readEmployeesJSONFileToEmployeeList() {
+		// jackson-tutorial\src\main\resources\Employee.json
+		List<Employee> employeeList = null;
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			
+			employeeList = objectMapper.readValue(
+				new File("src/main/resources/EmployeeList.json"), 
+				new TypeReference<List<Employee>>(){});
+
+		} catch(IOException i) {
+			i.printStackTrace();
+		} 
+		return employeeList;
+	}	
+
+	//read employee.json: convert to Employee Object: deserialization
+	public Employee[] readEmployeesJSONFileToEmployeeArray() {
+		// jackson-tutorial\src\main\resources\Employee.json
+		Employee[] employeeArray = new Employee[3];
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			
+			employeeArray = objectMapper.readValue(
+				new File("src/main/resources/EmployeeList.json"), 
+				Employee[].class);
+
+		} catch(IOException i) {
+			i.printStackTrace();
+		} 
+		return employeeArray;
+	}		
 
 	// convert JSON string to JsonNode: deserialization
 	public JsonNode jSONStringToJsonNode(String jsonString) {
@@ -81,6 +145,6 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
 	
 	//JSON String to Array
 
-	
+
 
 }

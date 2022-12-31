@@ -1,10 +1,15 @@
 package com.serverless.jackson;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Employee {
     private String name;
     private String city;
     private String department;
     private String designation;
+    
+    // @JsonIgnore
+    private Address address;
 
     public Employee() {
         super();
@@ -32,4 +37,12 @@ public class Employee {
     public String getDesignation() {
         return designation;
     }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }    
 }

@@ -1,0 +1,12 @@
+{
+    "name" : "John",
+    "city" : "Palo Alto",
+    "department" : "App Services",
+    "designation" : "Integration Dev Lead",
+    "address": {
+        "street": "Barry Avenue",
+        "state": "CA",
+        "zip": "90025",
+        "country": "US"
+    }
+}

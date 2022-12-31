@@ -45,6 +45,9 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
 		String empName = jsonNode.get("name").asText();
 		LOG.info("empName: {}", empName);
 
+		Employee employeeNestedAddressFromFile = readEmployeeNestedAddressJSONFileToEmployee();
+		LOG.info("employee Country From File: {}", employeeNestedAddressFromFile.getAddress().getCountry());
+
 		Response responseBody = new Response("Go Serverless v1.x! Your function executed successfully!", input);
 		return ApiGatewayResponse.builder()
 				.setStatusCode(200)
@@ -57,6 +60,7 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
 	public String employeeToJSONString(Employee employee) {
 		String jsonStr = null;
 		try {
+			LOG.info("convert Java Object to JSON string: serialization");
 			ObjectMapper objectMapper = new ObjectMapper();
 			jsonStr = objectMapper.writeValueAsString(employee); //use .writeValue to new File(emp.json)
 		} catch (JsonProcessingException e) {
@@ -68,6 +72,7 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
 	// convert JSON string to Employee Object: deserialization
 	public Employee JSONStringToEmployee(String jsonString) {
 		Employee employee = null;
+		LOG.info("convert JSON string to Employee Object: deserialization");
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
 			employee = objectMapper.readValue(jsonString, Employee.class);
@@ -111,7 +116,7 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
 		return employeeList;
 	}	
 
-	//read employee.json: convert to Employee Object: deserialization
+	//read EmployeeList.json: convert to Employee Objects Array: deserialization
 	public Employee[] readEmployeesJSONFileToEmployeeArray() {
 		// jackson-tutorial\src\main\resources\Employee.json
 		Employee[] employeeArray = new Employee[3];
@@ -139,6 +144,22 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
 		}
 		return jsonNode;
 	} 	
+
+	//read Employee_nested_Address.json: convert to Employee Object: deserialization
+	public Employee readEmployeeNestedAddressJSONFileToEmployee() {
+		// jackson-tutorial\src\main\resources\Employee.json
+		Employee employee = null;
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			employee = objectMapper.readValue(new File("src/main/resources/Employee_nested_Address.json"), Employee.class);
+		} catch(IOException i) {
+			i.printStackTrace();
+		} 
+		// catch (JsonProcessingException e) {
+		// 	e.printStackTrace();
+		// }
+		return employee;
+	}	
 
 
 	//JSON String to ArrayList 

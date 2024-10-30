@@ -1,0 +1,36 @@
+name: Java Linter
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Install dependencies
+        run: ./mvnw install -DskipTests
+
+      - name: Run Checkstyle
+        run: ./mvnw checkstyle:check
+
+      - name: Upload Checkstyle report
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: checkstyle-report
+          path: target/checkstyle-result.xml

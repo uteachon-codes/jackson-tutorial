@@ -22,11 +22,14 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
+      - name: Install Maven
+        run: sudo apt-get install -y maven
+
       - name: Install dependencies
-        run: ./mvnw install -DskipTests
+        run: mvn install -DskipTests
 
       - name: Run Checkstyle
-        run: ./mvnw checkstyle:check
+        run: mvn checkstyle:check
 
       - name: Upload Checkstyle report
         if: failure()
